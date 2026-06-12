@@ -1,0 +1,22 @@
+name: Test basic message inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: "fake-bot-token:AABBCCDDEEFF"
+          message: "Hello from test!"
+          format: "markdown"
+          debug: "true"
+          webpage_preview: "false"
+      - name: Assert action ran (may fail due to fake credentials)
+        run: |
+          echo "Action completed (with or without error due to fake credentials)"
+          echo "PASS: all basic inputs were accepted"

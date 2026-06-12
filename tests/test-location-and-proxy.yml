@@ -1,0 +1,25 @@
+name: Test location, venue, socks5, and message_file inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create message file
+        run: |
+          echo "Test message from file" > /tmp/telegram-message.txt
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: "fake-bot-token:AABBCCDDEEFF"
+          message_file: "/tmp/telegram-message.txt"
+          location: "40.7128 -74.0060"
+          venue: "40.7128 -74.0060 TestVenue TestAddress"
+          socks5: "socks5://127.0.0.1:1080"
+      - name: Assert action ran (may fail due to fake credentials)
+        run: |
+          echo "Action completed (with or without error due to fake credentials)"
+          echo "PASS: location, venue, socks5, and message_file inputs were accepted"

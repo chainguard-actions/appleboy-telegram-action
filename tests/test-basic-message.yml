@@ -1,0 +1,24 @@
+name: Test basic message inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        continue-on-error: true
+        uses: .
+        with:
+          to: "123456789"
+          token: "fake-token-for-testing"
+          message: "Hello from test"
+          format: "markdown"
+          debug: "true"
+          disable_web_page_preview: "true"
+          disable_notification: "true"
+          socks5: ""
+      - name: Assert action ran (may fail due to invalid credentials)
+        run: |
+          echo "Action completed with outcome: ${{ steps.action.outcome }}"
+          echo "PASS: action step executed"

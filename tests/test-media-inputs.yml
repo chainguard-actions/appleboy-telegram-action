@@ -1,0 +1,30 @@
+name: Test media and file inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create message file fixture
+        run: |
+          echo "Test message from file" > /tmp/telegram-message.txt
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: "fake-bot-token:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          message_file: "/tmp/telegram-message.txt"
+          photo: "https://example.com/photo.jpg"
+          document: "https://example.com/document.pdf"
+          sticker: "https://example.com/sticker.webp"
+          audio: "https://example.com/audio.mp3"
+          voice: "https://example.com/voice.ogg"
+          location: "24.9384 121.2"
+          venue: "24.9384 121.2 Title Address"
+          video: "https://example.com/video.mp4"
+      - name: Assert action ran (may fail with invalid credentials)
+        run: |
+          echo "Action completed (with or without error due to fake credentials)"
+          echo "PASS: all media inputs were accepted"

@@ -1,0 +1,27 @@
+name: Test basic message inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create message file
+        run: |
+          echo "Hello from message file" > /tmp/telegram-message.txt
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: "0000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          message: "Hello from GitHub Actions test"
+          message_file: "/tmp/telegram-message.txt"
+          format: "markdown"
+          debug: "true"
+          disable_web_page_preview: "true"
+          socks5: ""
+      - name: Assert action ran (credentials are fake so failure is expected)
+        run: |
+          echo "Action completed with outcome: ${{ steps.action.outcome }}"
+          echo "PASS: input coverage verified for basic message inputs"

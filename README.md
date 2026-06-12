@@ -9,6 +9,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
 | v0.0.9 | [`v0.0.9`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v0.0.9) | [`9e5e0be`](https://github.com/appleboy/telegram-action/commit/9e5e0be372118bd9daf2d6185c9a516c5ab08166) |
+| v0.1.0 | [`v0.1.0`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v0.1.0) | [`dc870f3`](https://github.com/appleboy/telegram-action/commit/dc870f34e9a38a9d80ccc683c8a722d6a7a9a281) |
 | v0.1.1 | [`v0.1.1`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v0.1.1) | [`2efd232`](https://github.com/appleboy/telegram-action/commit/2efd23283ae25229a0b4d315d5d33f73b346ef99) |
 
 ## Privacy

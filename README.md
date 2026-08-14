@@ -13,6 +13,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v0.1.1 | [`v0.1.1`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v0.1.1) | [`2efd232`](https://github.com/appleboy/telegram-action/commit/2efd23283ae25229a0b4d315d5d33f73b346ef99) |
 | v1.0.0 | [`v1.0.0`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.0) | [`a77dd3e`](https://github.com/appleboy/telegram-action/commit/a77dd3e42f32216ac2df808866c70b5aa41e6e75) |
 | v1.0.1 | [`v1.0.1`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.1) | [`221e6b6`](https://github.com/appleboy/telegram-action/commit/221e6b684967abe813051ee4a37dd61770a83ad3) |
+| v1.0.2 | [`v1.0.2`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.2) | [`d600df7`](https://github.com/appleboy/telegram-action/commit/d600df785afe8648bc23cbcf4495d9d30075dcba) |
 
 ## Privacy
 

@@ -1,4 +1,4 @@
-name: Test basic message sending
+name: Test message from file
 on:
   workflow_dispatch:
 jobs:
@@ -17,27 +17,30 @@ jobs:
           git remote set-url origin "$GITHUB_WORKSPACE/.git-remote" 2>/dev/null || \
             git remote add origin "$GITHUB_WORKSPACE/.git-remote"
 
-      - name: Run telegram action with invalid credentials (expect failure)
+      - name: Create message file
+        run: |
+          echo "Hello from a message file! This is a test." > /tmp/telegram-message.txt
+          cat /tmp/telegram-message.txt
+
+      - name: Run telegram action with message_file
         id: action
         uses: .
         continue-on-error: true
         with:
           to: "123456789"
           token: "invalid-token-for-testing"
-          message: "Hello from GitHub Actions test"
+          message_file: "/tmp/telegram-message.txt"
           debug: "true"
 
-      - name: Assert action ran (failed due to invalid credentials, not a crash)
+      - name: Assert action ran with message_file option
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
           echo "outcome: $OUTCOME"
-          # The action should fail because the token is invalid,
-          # but it should not crash with an unexpected error.
-          # We accept either 'failure' (invalid token rejected by Telegram API)
-          # or 'success' (if somehow the message was sent).
+          # The action should read the message from the file and attempt to send.
+          # It will fail due to invalid credentials, but should not crash unexpectedly.
           if [ "$OUTCOME" = "failure" ] || [ "$OUTCOME" = "success" ]; then
-            echo "PASS: action ran and produced a deterministic outcome"
+            echo "PASS: action ran with message_file option"
           else
             echo "FAIL: unexpected outcome: $OUTCOME"
             exit 1

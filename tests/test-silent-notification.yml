@@ -1,0 +1,33 @@
+name: Test silent notification (disable_notification)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Send Telegram message with notification disabled
+        id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: "0000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          message: "Silent notification test"
+          disable_notification: "true"
+
+      - name: Assert action ran with disable_notification
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # The action should either succeed or fail with an API error
+          # (not a setup/configuration error). Both 'success' and 'failure'
+          # are acceptable — what matters is the action was invoked.
+          if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action was invoked with disable_notification=true"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi

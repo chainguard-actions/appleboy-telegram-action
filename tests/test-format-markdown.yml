@@ -1,4 +1,4 @@
-name: Test basic message sending (invalid credentials)
+name: Test message with markdown format
 on:
   workflow_dispatch:
 jobs:
@@ -23,9 +23,10 @@ jobs:
         with:
           to: "123456789"
           token: "0000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-          message: "Hello from GitHub Actions test"
+          message: "*bold* _italic_ message"
+          format: "markdown"
 
-      - name: Assert action ran (failed due to invalid credentials, not setup error)
+      - name: Assert action ran with markdown format input
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |

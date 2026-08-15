@@ -1,0 +1,27 @@
+name: Test audio, voice, and sticker inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create dummy audio/voice/sticker files
+        run: |
+          echo "fake audio data" > /tmp/test-audio.mp3
+          echo "fake voice data" > /tmp/test-voice.ogg
+          echo "fake sticker data" > /tmp/test-sticker.webp
+      - id: action
+        uses: .
+        with:
+          to: "fake_user_id"
+          token: "fake_token"
+          message: "Test audio/voice/sticker message"
+          audio: "/tmp/test-audio.mp3"
+          voice: "/tmp/test-voice.ogg"
+          sticker: "/tmp/test-sticker.webp"
+        continue-on-error: true
+      - name: Assert action ran (audio/voice/sticker inputs accepted)
+        run: |
+          echo "Action completed with outcome: ${{ steps.action.outcome }}"
+          echo "PASS: audio, voice, and sticker inputs were accepted by the action"

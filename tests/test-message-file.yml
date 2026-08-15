@@ -1,4 +1,4 @@
-name: Test basic message (invalid credentials)
+name: Test message from file
 on:
   workflow_dispatch:
 
@@ -8,16 +8,20 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Run action with invalid credentials (expect failure)
+      - name: Create a message file
+        run: |
+          echo "Hello from a message file in act test" > /tmp/telegram-message.txt
+
+      - name: Run action with message_file (expect failure with invalid credentials)
         id: action
         uses: .
         continue-on-error: true
         with:
           to: "123456789"
           token: "fake-bot-token:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-          message: "Hello from act test"
+          message_file: "/tmp/telegram-message.txt"
 
-      - name: Assert action failed with invalid credentials
+      - name: Assert action failed (invalid credentials, message_file accepted)
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
@@ -26,4 +30,4 @@ jobs:
             echo "FAIL: expected action to fail with invalid credentials, got outcome=$OUTCOME"
             exit 1
           fi
-          echo "PASS: action correctly failed with invalid credentials"
+          echo "PASS: action correctly failed with invalid credentials using message_file"

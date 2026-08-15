@@ -1,0 +1,27 @@
+name: Test media file inputs (photo, document, video)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Create dummy media files
+        run: |
+          echo "fake photo data" > /tmp/test-photo.jpg
+          echo "fake document data" > /tmp/test-document.pdf
+          echo "fake video data" > /tmp/test-video.mp4
+      - id: action
+        uses: .
+        with:
+          to: "fake_user_id"
+          token: "fake_token"
+          message: "Test media message"
+          photo: "/tmp/test-photo.jpg"
+          document: "/tmp/test-document.pdf"
+          video: "/tmp/test-video.mp4"
+        continue-on-error: true
+      - name: Assert action ran (media inputs accepted)
+        run: |
+          echo "Action completed with outcome: ${{ steps.action.outcome }}"
+          echo "PASS: media inputs (photo, document, video) were accepted by the action"

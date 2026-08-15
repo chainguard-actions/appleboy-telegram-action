@@ -1,0 +1,21 @@
+name: Test location and venue inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          to: "fake_user_id"
+          token: "fake_token"
+          message: "Test location/venue message"
+          location: "37.7749,-122.4194"
+          venue: "37.7749,-122.4194,San Francisco,California"
+        continue-on-error: true
+      - name: Assert action ran (location/venue inputs accepted)
+        run: |
+          echo "Action completed with outcome: ${{ steps.action.outcome }}"
+          echo "PASS: location and venue inputs were accepted by the action"

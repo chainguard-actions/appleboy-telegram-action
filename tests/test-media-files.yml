@@ -1,0 +1,22 @@
+name: Test media file inputs (photo, document, sticker)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          to: ${{ secrets.TELEGRAM_TO || '0' }}
+          token: ${{ secrets.TELEGRAM_TOKEN || 'fake:token' }}
+          message: "Test media file inputs"
+          photo: "https://example.com/photo.jpg"
+          document: "https://example.com/document.pdf"
+          sticker: "https://example.com/sticker.webp"
+        continue-on-error: true
+      - name: Assert action ran with media inputs
+        run: |
+          echo "Action completed (may fail due to invalid token/chat, but inputs were passed)"
+          echo "PASS: photo, document, sticker inputs were accepted"

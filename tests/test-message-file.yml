@@ -1,4 +1,4 @@
-name: Test basic message sending (invalid credentials)
+name: Test message from file
 on:
   workflow_dispatch:
 jobs:
@@ -7,24 +7,28 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Run action with invalid credentials (expect failure)
+      - name: Create message file
+        run: |
+          echo "Hello from a message file!" > /tmp/telegram-message.txt
+
+      - name: Run action with message_file (invalid credentials)
         id: action
         uses: .
         continue-on-error: true
         with:
           to: "123456789"
           token: "0000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-          message: "Hello from GitHub Actions test"
+          message_file: "/tmp/telegram-message.txt"
 
-      - name: Assert action failed with invalid credentials
+      - name: Assert action ran (success or expected failure)
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
           echo "outcome: $OUTCOME"
           if [ "$OUTCOME" = "failure" ]; then
-            echo "PASS: action correctly failed with invalid credentials"
+            echo "PASS: action correctly failed with invalid credentials (message_file)"
           elif [ "$OUTCOME" = "success" ]; then
-            echo "PASS: action succeeded (real credentials may be configured)"
+            echo "PASS: action succeeded with message_file"
           else
             echo "FAIL: unexpected outcome: $OUTCOME"
             exit 1

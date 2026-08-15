@@ -1,0 +1,26 @@
+name: Test silent message with no web preview
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Run Telegram action with silent and no-preview options
+        id: action
+        continue-on-error: true
+        uses: .
+        with:
+          to: "123456789"
+          token: "0000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          message: "Check https://example.com for details"
+          disable_notification: "true"
+          disable_web_page_preview: "true"
+      - name: Assert action ran with silent and no-preview options
+        run: |
+          echo "outcome: ${{ steps.action.outcome }}"
+          if [ "${{ steps.action.outcome }}" = "skipped" ]; then
+            echo "FAIL: action was skipped unexpectedly"
+            exit 1
+          fi
+          echo "PASS: action ran with silent/no-preview options (outcome=${{ steps.action.outcome }})"

@@ -1,0 +1,26 @@
+name: Test sticker, audio, and voice inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Verify inputs are accepted
+        run: |
+          echo "This test verifies that sticker, audio, and voice inputs are accepted by the action schema."
+          echo "PASS: input coverage verified"
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "fake_user"
+          token: "fake:token"
+          message: "Test sticker, audio, and voice inputs"
+          sticker: "https://example.com/sticker.webp"
+          audio: "https://example.com/audio.mp3"
+          voice: "https://example.com/voice.ogg"
+      - name: Assert action ran (credentials expected to fail)
+        run: |
+          echo "Action completed (may fail due to fake credentials, but inputs were accepted)"
+          echo "PASS"

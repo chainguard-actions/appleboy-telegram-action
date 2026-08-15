@@ -1,0 +1,27 @@
+name: Test HTML format with debug mode
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Send Telegram message with HTML format and debug enabled
+        id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: "fake-token-for-testing"
+          message: "<b>Bold</b> and <i>italic</i> HTML message"
+          format: "html"
+          debug: "true"
+          disable_web_page_preview: "true"
+      - name: Assert action was invoked
+        run: |
+          echo "Action outcome: ${{ steps.action.outcome }}"
+          if [ "${{ steps.action.outcome }}" = "skipped" ]; then
+            echo "FAIL: action was skipped, expected it to run"
+            exit 1
+          fi
+          echo "PASS: action ran with HTML format and debug mode (outcome: ${{ steps.action.outcome }})"

@@ -1,19 +1,188 @@
-# appleboy/telegram-action
+# 🚀 Telegram for GitHub Actions
 
-Sending a Telegram message
+[繁體中文](./README.zh-tw.md) | [简体中文](./README.zh-cn.md)
 
-Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/appleboy/telegram-action](https://github.com/appleboy/telegram-action).
+[GitHub Action](https://github.com/features/actions) for sending Telegram notification messages.
 
-## Versions
+![notification](./images/telegram-notification.png)
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v0.0.9 | [`v0.0.9`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v0.0.9) | [`9e5e0be`](https://github.com/appleboy/telegram-action/commit/9e5e0be372118bd9daf2d6185c9a516c5ab08166) |
-| v0.1.0 | [`v0.1.0`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v0.1.0) | [`dc870f3`](https://github.com/appleboy/telegram-action/commit/dc870f34e9a38a9d80ccc683c8a722d6a7a9a281) |
-| v0.1.1 | [`v0.1.1`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v0.1.1) | [`2efd232`](https://github.com/appleboy/telegram-action/commit/2efd23283ae25229a0b4d315d5d33f73b346ef99) |
-| v1.0.0 | [`v1.0.0`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.0) | [`a77dd3e`](https://github.com/appleboy/telegram-action/commit/a77dd3e42f32216ac2df808866c70b5aa41e6e75) |
-| v1.0.1 | [`v1.0.1`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.1) | [`221e6b6`](https://github.com/appleboy/telegram-action/commit/221e6b684967abe813051ee4a37dd61770a83ad3) |
-| v1.0.2 | [`v1.0.2`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.2) | [`d600df7`](https://github.com/appleboy/telegram-action/commit/d600df785afe8648bc23cbcf4495d9d30075dcba) |
+[![Actions Status](https://github.com/appleboy/telegram-action/workflows/telegram%20message/badge.svg)](https://github.com/appleboy/telegram-action/actions)
+
+## Usage
+
+**Note**: If you receive the "Error: Chat not found" error, please refer to this StackOverflow answer [here](https://stackoverflow.com/a/41291666).
+
+Send a custom message and view the custom variables below.
+
+```yml
+name: telegram message
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@v1.1.1
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+```
+
+Remove the `message` input to send the default message.
+
+```yml
+- name: send default message
+  uses: appleboy/telegram-action@v1.1.1
+  with:
+    to: ${{ secrets.TELEGRAM_TO }}
+    token: ${{ secrets.TELEGRAM_TOKEN }}
+```
+
+![workflow](./images/telegram-workflow.png)
+
+## Input variables
+
+| Variable                 | Description                                                                                                             |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------- |
+| to                       | **required**. Unique identifier for the target chat.                                                                    |
+| token                    | **required**. Telegram authorization token.                                                                             |
+| socks5                   | optional. Support socks5 proxy URL                                                                                      |
+| photo                    | optional. Photo message                                                                                                 |
+| document                 | optional. Document message                                                                                              |
+| sticker                  | optional. Sticker message                                                                                               |
+| audio                    | optional. Audio message                                                                                                 |
+| voice                    | optional. Voice message                                                                                                 |
+| location                 | optional. Location message                                                                                              |
+| venue                    | optional. Venue message                                                                                                 |
+| video                    | optional. Video message                                                                                                 |
+| debug                    | optional. Enable debug mode                                                                                             |
+| format                   | optional. `markdown` or `html`. See [MarkdownV2 style](https://core.telegram.org/bots/api#markdownv2-style)             |
+| message                  | optional. Custom message                                                                                                |
+| message_file             | optional. Overwrite the default message template with the contents of the specified file.                               |
+| message_thread_id        | optional. Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.             |
+| disable_web_page_preview | optional. Disables link previews for links in this message. Default is `false`.                                         |
+| disable_notification     | optional. Disables notifications for this message, supports sending a message without notification. Default is `false`. |
+
+## Example
+
+Send photo message:
+
+```yml
+- uses: actions/checkout@v7
+- name: send photo message
+  uses: appleboy/telegram-action@v1.1.1
+  with:
+    to: ${{ secrets.TELEGRAM_TO }}
+    token: ${{ secrets.TELEGRAM_TOKEN }}
+    message: send photo message
+    photo: tests/github.png
+    document: tests/gophercolor.png
+```
+
+Send location message:
+
+```yml
+- name: send location message
+  uses: appleboy/telegram-action@v1.1.1
+  with:
+    to: ${{ secrets.TELEGRAM_TO }}
+    token: ${{ secrets.TELEGRAM_TOKEN }}
+    location: '24.9163213 121.1424972'
+    venue: '35.661777 139.704051 竹北體育館 新竹縣竹北市'
+```
+
+Send a message to a specific forum topic (thread):
+
+```yml
+- name: send message to forum topic
+  uses: appleboy/telegram-action@v1.1.1
+  with:
+    to: ${{ secrets.TELEGRAM_TO }}
+    token: ${{ secrets.TELEGRAM_TOKEN }}
+    message_thread_id: 42
+    message: Hello from GitHub Actions!
+```
+
+Send message using custom proxy (support `http`, `https`, and `socks5`) like `socks5://127.0.0.1:1080` or `http://222.124.154.19:23500`
+
+```yml
+- name: send message using socks5 proxy URL
+  uses: appleboy/telegram-action@v1.1.1
+  with:
+    to: ${{ secrets.TELEGRAM_TO }}
+    token: ${{ secrets.TELEGRAM_TOKEN }}
+    socks5: "http://222.124.154.19:23500"
+    message: Send message from socks5 proxy URL.
+```
+
+## Secrets
+
+Getting started with [Telegram Bot API](https://core.telegram.org/bots/api).
+
+* `token`: Telegram authorization token.
+* `to`: Unique identifier for this chat.
+
+How to get unique identifier from telegram api:
+
+```bash
+curl https://api.telegram.org/bot<token>/getUpdates
+```
+
+See the result: (get chat id like `65382999`)
+
+```json
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 664568113,
+      "message": {
+        "message_id": 8423,
+        "from": {
+          "id": 65382999,
+          "is_bot": false,
+          "first_name": "Bo-Yi",
+          "last_name": "Wu (appleboy)",
+          "username": "appleboy46",
+          "language_code": "en"
+        },
+        "chat": {
+          "id": 65382999,
+          "first_name": "Bo-Yi",
+          "last_name": "Wu (appleboy)",
+          "username": "appleboy46",
+          "type": "private"
+        },
+        "date": 1550333434,
+        "text": "?"
+      }
+    }
+  ]
+}
+```
+
+## Template variable
+
+| Github Variable   | Telegram Template Variable |
+| ----------------- | -------------------------- |
+| GITHUB_REPOSITORY | repo                       |
+| GITHUB_ACTOR      | repo.namespace             |
+| GITHUB_SHA        | commit.sha                 |
+| GITHUB_REF        | commit.ref                 |
+| GITHUB_WORKFLOW   | github.workflow            |
+| GITHUB_ACTION     | github.action              |
+| GITHUB_EVENT_NAME | github.event.name          |
+| GITHUB_EVENT_PATH | github.event.path          |
+| GITHUB_WORKSPACE  | github.workspace           |
 
 ## Privacy
 

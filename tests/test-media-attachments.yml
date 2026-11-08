@@ -1,0 +1,40 @@
+name: Test media attachments (invalid token rejected)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Verify fixture exists
+        run: |
+          if [ ! -f tests/fixtures/message.txt ]; then
+            echo "FAIL: fixture missing"
+            exit 1
+          fi
+          echo "PASS: fixture present"
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: "000000000:invalid-telegram-bot-token-for-testing"
+          message: "Media attachments test"
+          photo: tests/fixtures/message.txt
+          document: tests/fixtures/message.txt
+          sticker: tests/fixtures/message.txt
+          audio: tests/fixtures/message.txt
+          voice: tests/fixtures/message.txt
+          video: tests/fixtures/message.txt
+          debug: "true"
+      - name: Assert action ran and rejected the invalid Telegram token
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed as expected with an invalid Telegram token"
+          else
+            echo "FAIL: expected failure with an invalid token, got '$OUTCOME'"
+            exit 1
+          fi

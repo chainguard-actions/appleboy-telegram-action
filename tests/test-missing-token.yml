@@ -1,0 +1,26 @@
+name: Test missing token
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          to: "123456789"
+          token: ""
+          message: "This should not be sent"
+      - name: Assert action failed without a token
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed without a token"
+          else
+            echo "FAIL: expected failure without token, got '$OUTCOME'"
+            exit 1
+          fi

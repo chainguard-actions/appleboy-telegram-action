@@ -15,6 +15,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v1.0.1 | [`v1.0.1`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.1) | [`221e6b6`](https://github.com/appleboy/telegram-action/commit/221e6b684967abe813051ee4a37dd61770a83ad3) | [`HARDENING.md`](https://github.com/chainguard-actions/appleboy-telegram-action/blob/v1.0.1/HARDENING.md) |
 | v1.0.2 | [`v1.0.2`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.0.2) | [`d600df7`](https://github.com/appleboy/telegram-action/commit/d600df785afe8648bc23cbcf4495d9d30075dcba) | [`HARDENING.md`](https://github.com/chainguard-actions/appleboy-telegram-action/blob/v1.0.2/HARDENING.md) |
 | v1.1.1 | [`v1.1.1`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.1.1) | [`214f06c`](https://github.com/appleboy/telegram-action/commit/214f06cfa3d3a588c1472116889437e7c6fd29b1) | [`HARDENING.md`](https://github.com/chainguard-actions/appleboy-telegram-action/blob/v1.1.1/HARDENING.md) |
+| v1.1.2 | [`v1.1.2`](https://github.com/chainguard-actions/appleboy-telegram-action/tree/v1.1.2) | [`68ac04b`](https://github.com/appleboy/telegram-action/commit/68ac04bda0e0f4755e24649161566b4b6732cc83) | [`HARDENING.md`](https://github.com/chainguard-actions/appleboy-telegram-action/blob/v1.1.2/HARDENING.md) |
 
 ## Privacy
 
